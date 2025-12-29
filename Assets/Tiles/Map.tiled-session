@@ -1,0 +1,46 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "Entities.tsx",
+    "expandedProjectPaths": [
+    ],
+    "fileStates": {
+        "Entities.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "ground.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "map-test.tmx": {
+            "scale": 2,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 246.75,
+                "y": -6
+            }
+        }
+    },
+    "last.imagePath": "C:/Lab/assets/isometric",
+    "map.fixedSize": false,
+    "map.lastUsedFormat": "tmx",
+    "map.orientation": "2",
+    "map.tileHeight": 16,
+    "openFiles": [
+        "map-test.tmx",
+        "Entities.tsx"
+    ],
+    "project": "Map.tiled-project",
+    "recentFiles": [
+        "map-test.tmx",
+        "Entities.tsx",
+        "ground.tsx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.type": 1
+}
