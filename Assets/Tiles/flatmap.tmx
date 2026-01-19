@@ -709,7 +709,7 @@
   <object id="29" name="Arbre6" type="Arbre" x="-256" y="112">
    <point/>
   </object>
-  <object id="30" name="Arbre7" type="Arbre" x="176" y="256">
+  <object id="30" name="Arbre7" type="Arbre" x="176" y="240">
    <point/>
   </object>
   <object id="31" name="Arbre10" type="Arbre" x="-368" y="0">
