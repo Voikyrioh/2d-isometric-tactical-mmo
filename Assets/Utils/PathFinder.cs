@@ -16,7 +16,7 @@ namespace Utils
             _map = map;
         }
         
-        public List<Cell> getPath(Cell start, Cell end, bool ignoreWalkability = false)
+        public List<Cell> getPath(Cell start, Cell end, bool ignoreWalkability = false, bool diagonals = false)
         {
             openList.Add(start);
             objective = end;
@@ -25,7 +25,7 @@ namespace Utils
             gScore[start] = 0;
             
             var fScore = new Dictionary<Cell, int>();
-            fScore[start] = heuristic(start, end);
+            fScore[start] = heuristic(start, end, diagonals);
 
             while (openList.Count > 0)
             {
@@ -33,16 +33,15 @@ namespace Utils
                 openList.Remove(current);
                 if (current == end) return reconstructPath(end);
                 
-                foreach (var neighbor in GetNeighbors(current, ignoreWalkability))
+                foreach (var neighbor in GetNeighbors(current, ignoreWalkability, diagonals))
                 {
                     var newCostToNeighbor = gScore[current] + 1;
                     if (openList.Contains(neighbor) && newCostToNeighbor >= gScore[neighbor]) continue;
                     cameFrom[neighbor] = current;
                     gScore[neighbor] = newCostToNeighbor;
-                    fScore[neighbor] = newCostToNeighbor + heuristic(neighbor, end);
+                    fScore[neighbor] = newCostToNeighbor + heuristic(neighbor, end, diagonals);
                     if (!openList.Contains(neighbor)) openList.Add(neighbor);
                 }   
-                
             }
             
             return new List<Cell>();
@@ -58,24 +57,44 @@ namespace Utils
                 path.Add(current);
             }
             path.Reverse();
-            path.RemoveAt(0);
             return path;
         }
-        
-        private int heuristic(Cell a, Cell b) => Mathf.Abs(a.tilePosition.x - b.tilePosition.x) + Mathf.Abs(a.tilePosition.y - b.tilePosition.y);
 
-        private List<Cell> GetNeighbors(Cell cell, bool ignoreWalkability)
+        private int heuristic(Cell a, Cell b, bool diagonals)
+        {
+            var diffX = Mathf.Abs(a.tilePosition.x - b.tilePosition.x);
+            var diffY = Mathf.Abs(a.tilePosition.y - b.tilePosition.y);
+
+            return diffX + diffY;
+        }
+
+        private List<Cell> GetNeighbors(Cell cell, bool ignoreWalkability, bool diagonals)
         {
             var neighbors = new List<Cell>();
             var pos = cell.tilePosition;
+            var possiblePositions = new List<Vector2Int>();
+            possiblePositions.AddRange(new Vector2Int[] {
+                new(pos.x + 1, pos.y),
+                new(pos.x, pos.y + 1),
+                new(pos.x - 1, pos.y),
+                new(pos.x, pos.y - 1)
+            });
 
-            for (var x = -1; x <= 1; x++)
-                for (var y = -1; y <= 1; y++)
-                {
-                    var neighbor = _map.GetCellFromPos(new Vector2Int(pos.x + x, pos.y + y));
-                    if(neighbor && (neighbor.Walkable || (ignoreWalkability && neighbor == objective)) && neighbor != cell && !cameFrom.ContainsValue(neighbor) )
-                        neighbors.Add(neighbor);
-                }
+            if (diagonals) 
+            {
+                possiblePositions.AddRange(new Vector2Int[] {
+                    new(pos.x + 1, pos.y + 1),
+                    new(pos.x + 1, pos.y - 1),
+                    new(pos.x - 1, pos.y + 1),
+                    new(pos.x - 1, pos.y - 1)
+                });
+            }
+
+            foreach (var p in possiblePositions) {
+                var neighbor = _map.GetCellFromPos(p);
+                if(neighbor && (neighbor.Walkable || (ignoreWalkability && neighbor == objective)) && neighbor != cell && !cameFrom.ContainsValue(neighbor) )
+                    neighbors.Add(neighbor);
+            }
             
             return neighbors;
         }
