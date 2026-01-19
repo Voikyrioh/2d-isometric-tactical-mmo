@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Characters;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
@@ -18,8 +19,10 @@ namespace DefaultNamespace.Managers
         [SerializeField] private Player playerPrefab;
         [SerializeField] private Vector2Int playerPosition;
         [SerializeField] private PlayerCursor cursorPrefab;
+        [SerializeField] private Canvas mainUIPrefab;
 
         public GameObject cellsContainer;
+        public Inventory inventoryManager;
         public CameraManager cameraManager;
         public Camera mainCameraInstance;
         public Light2D lightInstance;
@@ -27,6 +30,7 @@ namespace DefaultNamespace.Managers
         public MapManager mapInstance;
         public PlayerCursor cursorInstance;
         public Player playerInstance;
+        public Canvas mainUi;
 
         private void Awake()
         {
@@ -51,6 +55,8 @@ namespace DefaultNamespace.Managers
             mainCameraInstance = Instantiate(mainCameraPrefab, Vector3.zero, Quaternion.identity);
             mainCameraInstance.transform.position = new Vector3(mainCameraInstance.transform.position.x, mainCameraInstance.transform.position.y, -1);
             lightInstance = Instantiate(lightPrefab, Vector3.zero, Quaternion.identity);
+            mainUi = Instantiate(mainUIPrefab, Vector3.zero, Quaternion.identity);
+            inventoryManager = new GameObject("InventoryManager").AddComponent<Inventory>();
         }
 
         private async Task InitializeMap()
