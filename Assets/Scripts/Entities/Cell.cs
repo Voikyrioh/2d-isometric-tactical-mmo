@@ -1,4 +1,5 @@
 using DefaultNamespace.Managers;
+using Entities;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -6,7 +7,7 @@ namespace DefaultNamespace
 {
     public class Cell : MonoBehaviour
     {
-        private CellEntity _entity;
+        private GameEntity gameEntity;
         public Vector3Int tilePosition;
         private bool isSelected;
 
@@ -19,12 +20,12 @@ namespace DefaultNamespace
             }
         }
         
-        public CellEntity GetEntity() => _entity;
+        public GameEntity GetEntity() => gameEntity;
         
-        public void SetEntity(CellEntity entity)
+        public void SetEntity(GameEntity gameEntity)
         {
-            _entity = entity;
-            Walkable = entity.IsWalkable;
+            this.gameEntity = gameEntity;
+            Walkable = false;
         }
     }
 }

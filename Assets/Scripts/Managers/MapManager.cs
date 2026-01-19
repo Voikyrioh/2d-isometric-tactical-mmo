@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using DefaultNamespace;
+using Entities;
 using JetBrains.Annotations;
 using SuperTiled2Unity;
 using TMPro;
@@ -62,7 +63,7 @@ public class MapManager : MonoBehaviour
 
     public void CreateEntities()
     {
-        foreach (var entity in _entities.GetComponentsInChildren<CellEntity>())
+        foreach (var entity in _entities.GetComponentsInChildren<GameEntity>())
         {
             var entityPosition = entity.transform.position;
             var cell = GetCellFromWorld(entityPosition);
@@ -70,7 +71,7 @@ public class MapManager : MonoBehaviour
             {
                 entity.posX = cell.tilePosition.x;
                 entity.posY = cell.tilePosition.y;
-                entity.gameObject.transform.position = new Vector3(cell.transform.position.x, cell.transform.position.y, cell.transform.position.z + 1);
+                entity.gameObject.transform.position = new Vector3(cell.transform.position.x, cell.transform.position.y + cellSize.y/2, cell.transform.position.z + 1);
                 cell.SetEntity(entity);
             }
         }
