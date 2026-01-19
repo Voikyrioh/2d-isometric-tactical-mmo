@@ -1,12 +1,13 @@
+using System.Collections.Generic;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
 
 namespace DefaultNamespace.Managers
 {
     public class MouseManager : MonoBehaviour
     {
+        private Dictionary<string, double> EventTimeBuffer = new();
         private InputSystem inputSystem;
         private Vector2 mousePos;
         [CanBeNull] private Interactable hoveredInteractable;
@@ -32,8 +33,17 @@ namespace DefaultNamespace.Managers
             inputSystem.UI.Click.performed += Click;
         }
 
+        private bool EventIsTriggerable(string eventName, double eventTime, double triggerRequirement)
+        {
+            if (EventTimeBuffer.ContainsKey(eventName) && !(eventTime - EventTimeBuffer[eventName] > triggerRequirement)) return false;
+            EventTimeBuffer[eventName] = eventTime;
+            
+            return true;
+        }
+
         private void GetHover(InputAction.CallbackContext ctx)
         {
+            if (!EventIsTriggerable(ctx.action.name, ctx.time, 0.01)) return;
             hoveredInteractable?.RemoveHover();
             GameManager.Instance.cursorInstance.Hide(); 
             mousePos = ctx.action.ReadValue<Vector2>();
@@ -53,6 +63,7 @@ namespace DefaultNamespace.Managers
         
         private void Click(InputAction.CallbackContext ctx)
         {
+            if (!EventIsTriggerable(ctx.action.name, ctx.time, 0.2)) return;
             if (GetTClassAtPos<Interactable>(mousePos, LayerMask.GetMask("Entities"), out var interactable))
                 interactable.Click();
             else if (GetTClassAtPos<Cell>(mousePos, LayerMask.GetMask("Ground"), out var cell))
