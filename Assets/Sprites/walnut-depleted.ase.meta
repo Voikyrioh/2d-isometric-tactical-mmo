@@ -125,7 +125,7 @@ ScriptedImporter:
   animatedSpriteImportData:
   - name: walnut-depleted
     originalName: 
-    pivot: {x: 0.4, y: 0.157}
+    pivot: {x: 0.4215332, y: 0.24830058}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 

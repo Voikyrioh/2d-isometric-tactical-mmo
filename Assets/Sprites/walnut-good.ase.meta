@@ -125,7 +125,7 @@ ScriptedImporter:
   animatedSpriteImportData:
   - name: walnut-good
     originalName: 
-    pivot: {x: 0.475, y: 0.02}
+    pivot: {x: 0.48059717, y: 0.031197224}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
